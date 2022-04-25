@@ -48,3 +48,15 @@ spiegel_24_hrs_german <- ft_v2_api(domains = "spiegel.de", maximum_records = 250
 spiegel_13_04_22_german <- ft_v2_api(domains = "spiegel.de", maximum_records = 2500, 
                                    source_countries = "GM", source_languages = "German",
                                    visualize_results = F, timespans = c("52 weeks"))
+
+# Get GDELT historical data, possible back until 2013
+
+# http://data.gdeltproject.org/events/ --> list with all database extracted csv files
+
+temp <- tempfile()
+download.file("http://data.gdeltproject.org/events/20220422.export.CSV.zip",temp)
+data <- read_tsv(temp, col_names = F)
+unlink(temp)
+
+filter_test <- data %>% 
+  dplyr::filter(grepl("spiegel.de", X58))
